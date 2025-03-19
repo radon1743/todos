@@ -7,9 +7,11 @@ from rich.console import Console
 from datetime import datetime
 from . import __version__
 
+
 console = Console(stderr=True)
 USER_FILE = "./users/users.json"
 SESSION_FILE = "./users/session.json"
+DATA_FILE = "./users/data/"
 
 def user_file_exits():
     """Ensure User file exist, if not it creates it"""
@@ -32,6 +34,10 @@ def save_session(username):
 @click.version_option(version=__version__)
 def main() -> None:
     """CLI based TODO application"""
+    # user = get_user()
+    # if user!="guest":
+    #     console.print(f"[green]{user}[/green]", end=" ")
+    # console.print("> ", end="")  
     pass
 
 @main.command()
@@ -46,14 +52,17 @@ def flush(clear:bool):
             console.print(json.load(f)) 
 
 @main.command()
-def get_user():
+def get_user() -> str:
     """Check the signed-in user."""
     with open(SESSION_FILE, 'r') as f:
         data = json.load(f)
         if(len(data)>0):
-            console.print(f"Current signed in user > [blue]{data.popitem()[1]}[/blue]")
+            user = data.popitem()[1]
+            console.print(f"Current signed in user > [blue]{user}[/blue]")
+            return user
         else:
             console.print(f"[red] No user signed in [/red]")
+            return "guest"
 
 @main.command()
 @click.option("-u", "--username", type = str, required=True, help="User name")
@@ -91,6 +100,44 @@ def make_user(username:str,password:str)-> None:
             
     except Exception as e:
         console.print(f"[red]Error Signing up user {e}: [/red]")
+
+def get_curr_user() -> str:
+    """Check the signed-in user."""
+    with open(SESSION_FILE, 'r') as f:
+        data = json.load(f)
+        if(len(data)>0):
+            user = data.popitem()[1]
+            return user
+        else:
+            return "guest"
+
+
+@main.command()
+@click.option("-d", "--date", type=str, required=True, help="Conpletion date for Task")
+@click.option("-t", "--text", type=str, required=True, help="Text for Task")
+@click.option("-c", "--completed", is_flag=True, help="Is the task completed?")
+def add_task(date:str, text:str, completed:bool)-> None:
+    """Add task"""
+    task_id  = str(datetime.now().timestamp())
+    todo_data = {task_id: {"date": date, "text": text, "completed": completed}}
+    user_file_path = DATA_FILE + get_curr_user() + ".json"
+
+    try:
+        data = {}
+        if not os.path.exists(user_file_path):
+            os.makedirs(os.path.dirname(user_file_path), exist_ok=True)
+        else:
+            with open(user_file_path, "r") as f:
+                data = json.load(f)
+        data.update(todo_data)
+
+        with open(user_file_path,"w") as f:
+            json.dump(data,f,indent=2)
+        
+        console.print(f"[green]Task added successfully for user {get_curr_user()} [/green]")
+    except Exception as e:
+        console.print(f"[red]Error writing data up user {e}: [/red]")
+
 
 if __name__=="__main__":
     main()
