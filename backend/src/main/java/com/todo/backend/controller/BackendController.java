@@ -21,6 +21,5 @@ public class BackendController {
         System.out.println(s);
         return s;
     }
-    
 
 }

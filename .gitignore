@@ -1,2 +1,9 @@
+# Ignore files
 .vscode
+*.json
 
+# Environment files
+venv/
+
+# Byte-compiled
+__pycache__/

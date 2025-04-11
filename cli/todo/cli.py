@@ -6,8 +6,10 @@ from rich.console import Console
 
 from datetime import datetime
 from . import __version__
+from . import task
 
 
+tasks_manager = task.TasksManager()
 console = Console(stderr=True)
 USER_FILE = "./users/users.json"
 SESSION_FILE = "./users/session.json"
@@ -43,7 +45,7 @@ def main() -> None:
 @main.command()
 @click.option("-s", "--session", type=bool, required=False, is_flag=True, help="Flush session")
 def flush(session:bool):
-    """Clears out session file"""
+    """Clears out or outputs session file"""
     if(not session): 
         with open(SESSION_FILE, 'w') as f:
             json.dump({}, f, indent=2)
@@ -119,26 +121,16 @@ def get_curr_user() -> str:
 def add_task(date:str, text:str, completed:bool)-> None:
     """Add task"""
     task_id  = str(datetime.now().timestamp())
-    todo_data = {task_id: {"date": date, "text": text, "completed": completed}}
-    user_file_path =  get_curr_user() 
+    tasks_manager.add_task(task_id,date,text,completed,get_curr_user())
 
-    try:
-        data = {}
-        if not os.path.exists(user_file_path):
-            os.makedirs(os.path.dirname(user_file_path), exist_ok=True)
-        else:
-            with open(user_file_path, "r") as f:
-                data = json.load(f)
-        data.update(todo_data)
+@main.command()
+@click.option("-a", "--all", is_flag=True, help="Get all tasks")
+def get_tasks(all:bool)->None:
+    "Get remote tasks"
+    username = get_curr_user()
+    tasks_manager.get_task(username,all)
 
-        with open(user_file_path,"w") as f:
-            json.dump(data,f,indent=2)
-        
-        console.print(f"[green]Task added successfully for user {get_curr_user().split("/")[-1:][0]} [/green]")
-    except Exception as e:
-        console.print(f"[red]Error writing data up user {e}: [/red]")
-
-
+    
 
 if __name__=="__main__":
     main()

@@ -1,19 +1,17 @@
 package com.todo.backend.service.users;
-
 import java.util.List;
-
-import com.todo.backend.models.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.todo.backend.models.Users;
 import com.todo.backend.repositories.UsersRepo;
 
 @Service
 public class UsersServiceImpl implements UsersService{
     
     @Autowired
-    public final UsersRepo usersRepo = null;
+    public UsersRepo usersRepo;
 
     @Override
     public String test(){
