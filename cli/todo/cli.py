@@ -8,7 +8,6 @@ from datetime import datetime
 from . import __version__
 from . import task
 
-
 tasks_manager = task.TasksManager()
 console = Console(stderr=True)
 USER_FILE = "./users/users.json"
@@ -118,19 +117,29 @@ def get_curr_user() -> str:
 @click.option("-d", "--date", type=str, required=True, help="Conpletion date for Task")
 @click.option("-t", "--text", type=str, required=True, help="Text for Task")
 @click.option("-c", "--completed", is_flag=True, help="Is the task completed?")
-def add_task(date:str, text:str, completed:bool)-> None:
+@click.option("-l", "--local", is_flag=True , help="Save task only locally")
+def add_task(date:str, text:str, completed:bool, local:bool)-> None:
     """Add task"""
     task_id  = str(datetime.now().timestamp())
-    tasks_manager.add_task(task_id,date,text,completed,get_curr_user())
+    if (local):
+        tasks_manager.add_local_task(task_id,date,text,completed,get_curr_user())
+    else:
+        tasks_manager.add_remote_task(task_id,date,text,completed,get_curr_user())
 
 @main.command()
 @click.option("-a", "--all", is_flag=True, help="Get all tasks")
 def get_tasks(all:bool)->None:
     "Get remote tasks"
     username = get_curr_user()
-    tasks_manager.get_task(username,all)
+    tasks_manager.get_remote_task(username,all)
 
-    
+@main.command()
+@click.option("-a", "--all", is_flag=True, help="Get all tasks")
+def get_tasks(all:bool)->None:
+    "Get remote tasks"
+    username = get_curr_user()
+    tasks_manager.get_remote_task(username,all)
+
 
 if __name__=="__main__":
     main()

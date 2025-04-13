@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Tasks {
 
     @Id
-    private String id;
     private String taskId;
     private String date;
     private String text;
@@ -18,21 +17,11 @@ public class Tasks {
     }
 
     public Tasks(String id, String taskId, String date, String text, boolean isCompleted) {
-        this.id = id;
+       
         this.taskId = taskId;
         this.date = date;
         this.text = text;
         this.isCompleted = isCompleted;
-    }
-
-    
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTaskId() {

@@ -1,9 +1,11 @@
 # Ignore files
 .vscode
 *.json
+/session.json
 
 # Environment files
 venv/
 
 # Byte-compiled
-__pycache__/
+*__pycache__/
+*.pyc
