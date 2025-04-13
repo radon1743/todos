@@ -7,6 +7,5 @@ import com.todo.backend.models.Tasks;
 
 @Repository
 public interface TasksRepo extends MongoRepository<Tasks, String>{
-    
-
+    Tasks findByTaskId(String taskId);
 }

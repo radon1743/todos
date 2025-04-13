@@ -30,6 +30,12 @@ public class TasksController {
         return ResponseEntity.ok(tasks);
     }
 
+    @GetMapping("/findAllTask/{id}")
+    public ResponseEntity<Tasks> getTask(@PathVariable String id) {
+        Tasks tasks = tasksService.getTask(id);
+        return ResponseEntity.ok(tasks);
+    }
+
     @PostMapping("/addTasks")
     public String addTask(@RequestBody Tasks task) {
         tasksService.addTask(task);

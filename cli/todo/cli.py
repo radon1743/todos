@@ -140,19 +140,27 @@ def add_task(date:str, text:str, completed:bool, local:bool)-> None:
     else:
         tasks_manager.add_remote_task(task_id,date,text,completed,get_curr_user())
 
-@main.command()
-@click.option("-a", "--all", is_flag=True, help="Get all tasks")
-def get_tasks(all:bool)->None:
-    "Get remote tasks"
-    username = get_curr_user()
-    tasks_manager.get_remote_task(username,all)
 
 @main.command()
 @click.option("-a", "--all", is_flag=True, help="Get all tasks")
-def get_tasks(all:bool)->None:
+@click.option("-i", 
+              "--id", 
+              type=str, 
+              help="Task id")
+def get_tasks(all:bool, id:str)->None:
     "Get remote tasks"
     username = get_curr_user()
-    tasks_manager.get_remote_task(username,all)
+    tasks_manager.get_task(all, id)
+
+@main.command()
+@click.option("-i", 
+              "--id", 
+              type=str, 
+              required=True, 
+              help="Task id to be deleted")
+def del_task(id:str) ->None:
+    "Delete task"
+    tasks_manager.delete_task(id)
 
 
 if __name__=="__main__":

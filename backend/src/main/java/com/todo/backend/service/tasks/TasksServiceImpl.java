@@ -10,7 +10,6 @@ import com.todo.backend.models.Tasks;
 import com.todo.backend.repositories.TasksRepo;
 
 @Service
-
 public class TasksServiceImpl implements TasksService{
 
     @Autowired
@@ -31,4 +30,9 @@ public class TasksServiceImpl implements TasksService{
         tasksRepo.deleteById(id);
     }
 
+    @Override 
+    public Tasks getTask(String id){
+        return tasksRepo.findByTaskId(id);
+    
+    }
 }

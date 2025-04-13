@@ -52,11 +52,11 @@ class TasksManager:
             console.print(f"[bold red] Connection fail: Server is down[/bold red]")
             
 
-    def get_remote_task(self, username: str, all:bool):
+    def get_task(self, all:bool, id: str):
         if(all):   
             response = requests.get(API_URL + "findAllTasks")
         else:
-            response = requests.get(f"{API_URL}findAllTasks/{username}")
+            response = requests.get(f"{API_URL}findAllTasks/{id}")
         
         if(response.status_code == 200):
             data = response.json()
@@ -64,4 +64,13 @@ class TasksManager:
         else:
             console.print(f"[red]Connection Error !! \nStatus code: {response.status_code }[/red]")
     
+    def delete_task(self, taskId: str):
+        response = requests.delete(f"{API_URL}deleteTasks/{taskId}")
+        
+        if(response.status_code == 200):
+            console.print(f"[green]Task Succefully deleted : {taskId}[/green]")
+        else:
+            console.print(f"[red]Connection Error !! \nStatus code: {response.status_code }[/red]")
+    
+        
 
