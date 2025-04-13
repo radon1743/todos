@@ -36,12 +36,11 @@ class TasksManager:
         "Add remote tasks to API URL"
         
         todo_data = {
-            task_id: {
+                "taskId": task_id, 
                 "date": date, 
                 "text": text, 
-                "completed": completed
+                "isCompleted": completed
             }
-        }
         try:
             response = requests.post(API_URL + "addTasks", json = todo_data)
 
@@ -64,6 +63,5 @@ class TasksManager:
             console.print(data)
         else:
             console.print(f"[red]Connection Error !! \nStatus code: {response.status_code }[/red]")
-    
     
 

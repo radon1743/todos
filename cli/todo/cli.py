@@ -114,13 +114,27 @@ def get_curr_user() -> str:
 
 
 @main.command()
-@click.option("-d", "--date", type=str, required=True, help="Conpletion date for Task")
-@click.option("-t", "--text", type=str, required=True, help="Text for Task")
-@click.option("-c", "--completed", is_flag=True, help="Is the task completed?")
-@click.option("-l", "--local", is_flag=True , help="Save task only locally")
+@click.option("-d", 
+              "--date",
+              type=str,default= str(datetime.now().strftime("%d/%m/%Y")),
+              required=False,
+              help="Conpletion date for Task")
+@click.option("-t", 
+              "--text", 
+              type=str, 
+              required=True, 
+              help="Text for Task")
+@click.option("-c", 
+              "--completed", 
+              is_flag=True, 
+              help="Is the task completed?")
+@click.option("-l", 
+              "--local", 
+              is_flag=True , 
+              help="Save task only locally")
 def add_task(date:str, text:str, completed:bool, local:bool)-> None:
     """Add task"""
-    task_id  = str(datetime.now().timestamp())
+    task_id  = str(datetime.now().timestamp()).replace(".","")
     if (local):
         tasks_manager.add_local_task(task_id,date,text,completed,get_curr_user())
     else:
