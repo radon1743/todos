@@ -56,7 +56,7 @@ class TasksManager:
         if(all):   
             response = requests.get(API_URL + "findAllTasks")
         else:
-            response = requests.get(f"{API_URL}findAllTasks/{id}")
+            response = requests.get(f"{API_URL}findAllTask/{id}")
         
         if(response.status_code == 200):
             data = response.json()
@@ -66,11 +66,26 @@ class TasksManager:
     
     def delete_task(self, taskId: str):
         response = requests.delete(f"{API_URL}deleteTasks/{taskId}")
-        
         if(response.status_code == 200):
             console.print(f"[green]Task Succefully deleted : {taskId}[/green]")
         else:
             console.print(f"[red]Connection Error !! \nStatus code: {response.status_code }[/red]")
     
+    def edit_task(self, taskId: str, date:str, text:str, completed:bool):
+        new_todo_data = {}
         
+        if date is not None:
+            new_todo_data["date"] = date
+        if text is not None:
+            new_todo_data["text"] = text
+        if completed is not None:
+            new_todo_data["isCompleted"] = completed 
+
+
+        response = requests.put(f"{API_URL}editTask/{taskId}", json=new_todo_data)
+        if(response.status_code == 200):
+            data = response.json()
+            console.print(data)
+        else:
+            console.print(f"[red]Connection Error !! \nStatus code: {response.status_code }[/red]")
 

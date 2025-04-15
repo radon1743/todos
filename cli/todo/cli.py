@@ -162,6 +162,32 @@ def del_task(id:str) ->None:
     "Delete task"
     tasks_manager.delete_task(id)
 
+@main.command()
+@click.option("-i", 
+              "--id", 
+              type=str, 
+              required=True, 
+              help="Task id to be edited")
+@click.option("-d", 
+              "--date",
+              type=str,
+              required=False,
+              default=None,
+              help="Conpletion date for Task")
+@click.option("-t", 
+              "--text", 
+              type=str,
+              default=None,
+              help="Text for Task")
+@click.option("-c", 
+              "--completed", 
+              is_flag=True,
+              default=None,
+              help="Is the task completed?")
+def edit_task(id:str, date:str, text:str, completed:bool) ->None:
+    "Edit task"
+
+    tasks_manager.edit_task(id, date, text, completed)
 
 if __name__=="__main__":
     main()
