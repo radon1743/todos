@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,4 +49,9 @@ public class TasksController {
         return "Deleted Successfully";
     }
     
+    @PutMapping("/editTask/{taskId}")
+    public ResponseEntity<Tasks> editTask(@PathVariable String taskId, @RequestBody Tasks updated ){
+        Tasks task = tasksService.editTask(taskId, updated);
+        return ResponseEntity.ok(task);
+    }
 }

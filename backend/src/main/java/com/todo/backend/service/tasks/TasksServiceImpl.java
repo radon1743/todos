@@ -35,4 +35,22 @@ public class TasksServiceImpl implements TasksService{
         return tasksRepo.findByTaskId(id);
     
     }
+
+    @Override 
+    public Tasks editTask(String id, Tasks updatedTask){
+
+        Tasks newTask = getTask(id);
+
+        if(updatedTask.getIsCompleted() != null){
+            newTask.setIsCompleted(updatedTask.getIsCompleted());
+        }
+        if(updatedTask.getDate() != null){
+            newTask.setDate(updatedTask.getDate());
+
+        }
+        if(updatedTask.getText() != null){
+            newTask.setText(updatedTask.getText());
+        }
+        return tasksRepo.save(newTask);
+    }
 }

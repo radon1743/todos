@@ -10,7 +10,7 @@ public class Tasks {
     private String taskId;
     private String date;
     private String text;
-    private boolean isCompleted;
+    private Boolean isCompleted;
 
 
     public Tasks() {
@@ -48,15 +48,15 @@ public class Tasks {
         this.text = text;
     }
 
-    public boolean isIsCompleted() {
+    public Boolean isIsCompleted() {
         return this.isCompleted;
     }
 
-    public boolean getIsCompleted() {
+    public Boolean getIsCompleted() {
         return this.isCompleted;
     }
 
-    public void setIsCompleted(boolean isCompleted) {
+    public void setIsCompleted(Boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
     
